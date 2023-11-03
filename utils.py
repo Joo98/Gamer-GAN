@@ -2,7 +2,7 @@ import torch
 from torchvision.utils import save_image
 import numpy as np
 
-def train(dataloader, generator, discriminator, optimzer_G, optimizer_D, loss, epochs, sample_interval, device):
+def train(dataloader, generator, discriminator, optimizer_G, optimizer_D, loss, epochs, sample_interval, device):
     for epoch in range(epochs):
         for i, (imgs, _) in enumerate(dataloader):
 
