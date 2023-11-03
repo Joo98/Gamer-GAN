@@ -2,13 +2,13 @@ import torch
 from torchvision.utils import save_image
 import numpy as np
 
-def train(dataloader, generator, discriminator, optimizer_G, optimizer_D, loss, epochs, sample_interval, device):
+def train(dataloader, generator, discriminator, optimizer_G, optimizer_D, loss, epochs, sample_interval, log_every, device):
     for epoch in range(epochs):
         for i, (imgs, _) in enumerate(dataloader):
 
             # Adversarial ground truths
-            valid = torch.ones((imgs.size(0), 1), dtype=torch.float).to(device)
-            fake = torch.ones((imgs.size(0), 1), dtype=torch.float).to(device)
+            valid = torch.ones((imgs.size(0), 1)).to(device)
+            fake = torch.ones((imgs.size(0), 1)).to(device)
             
             #valid = Tensor(imgs.size(0), 1).fill_(1.0), 
             #fake = Tensor(imgs.size(0), 1).fill_(0.0),
@@ -23,7 +23,7 @@ def train(dataloader, generator, discriminator, optimizer_G, optimizer_D, loss, 
             optimizer_G.zero_grad()
 
             # Sample noise as generator input
-            z = torch.from_numpy(np.random.normal(0, 1, (imgs.shape[0], generator.latent_dim))).to(device)
+            z = torch.from_numpy(np.random.normal(0, 1, (imgs.shape[0], generator.latent_dim))).float().to(device)
 
             # Generate a batch of images
             gen_imgs = generator(z)
@@ -47,11 +47,11 @@ def train(dataloader, generator, discriminator, optimizer_G, optimizer_D, loss, 
 
             d_loss.backward()
             optimizer_D.step()
-
-            print(
-                "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f]"
-                % (epoch, epochs, i, len(dataloader), d_loss.item(), g_loss.item())
-            )
+            if i % log_every == 0:
+                print(
+                    "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f]"
+                    % (epoch, epochs, i, len(dataloader), d_loss.item(), g_loss.item())
+                )
 
             batches_done = epoch * len(dataloader) + i
             if batches_done % sample_interval == 0:
