@@ -23,7 +23,7 @@ def train(dataloader, generator, discriminator, optimizer_G, optimizer_D, loss, 
             optimizer_G.zero_grad()
 
             # Sample noise as generator input
-            z = (np.random.normal(0, 1, (imgs.shape[0], generator.latent_dim)))
+            z = torch.from_numpy(np.random.normal(0, 1, (imgs.shape[0], generator.latent_dim)))
 
             # Generate a batch of images
             gen_imgs = generator(z)
