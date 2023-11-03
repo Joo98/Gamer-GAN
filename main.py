@@ -51,7 +51,7 @@ def main(args):
     optimizer_G = torch.optim.Adam(generator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
     optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
 
-    train(dataloader, generator, discriminator, optimizer_G, optimizer_D, adversarial_loss, opt.epochs, opt.sample_interval, device)
+    train(dataloader, generator, discriminator, optimizer_G, optimizer_D, adversarial_loss, opt.epochs, opt.sample_interval, opt.log_every, device)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -65,5 +65,6 @@ if __name__ == '__main__':
     parser.add_argument("--img_size", type=int, default=28, help="size of each image dimension")
     parser.add_argument("--channels", type=int, default=1, help="number of image channels")
     parser.add_argument("--sample_interval", type=int, default=400, help="interval betwen image samples")
+    parser.add_argument("--log_every", type=int, default=100, help="interval between logging")
     opt = parser.parse_args()
     main(opt)
