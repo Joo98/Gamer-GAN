@@ -25,7 +25,7 @@ def main(args):
     # Initialize generator and discriminator
     generator = Generator(img_shape, opt.latent_dim)
     discriminator = Discriminator(img_shape)
-    
+    device = 'cpu'
     if torch.cuda.is_available():
         device = 'cuda'
         generator.to(device)
